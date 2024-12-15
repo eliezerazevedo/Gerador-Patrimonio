@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etiquetas para Impressão</title>
+    <style>
+        /* Estilo geral */
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .etiqueta {
+            display: block;
+            width: 100%;
+            max-width: 10cm;
+            max-height: 5.5cm;
+            box-sizing: border-box;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+        }
+
+        /* Estilos específicos para impressão */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                font-size: 12pt;
+            }
+
+            .etiqueta {
+                display: block;
+                page-break-before: always; /* Força a quebra de página antes de cada etiqueta */
+                max-width: 10cm;
+                max-height: 5.5cm;
+            }
+
+            .etiqueta:first-of-type {
+                page-break-before: auto; /* Remove a quebra de página antes da primeira etiqueta */
+            }
+
+            /* Assegura que cada página não fique com espaços em branco desnecessários */
+            .etiqueta img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            /* A página de impressão não deve ter margens extras */
+            @page {
+                margin: 0;
+            }
+
+            /* Esconde o botão de voltar na impressão */
+            .btn-back {
+                display: none !important;
+            }
+        }
+
+        /* Estilo do botão */
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body onload="window.print();">
+    <!-- Botão para voltar à página inicial -->
+    <a href="/" class="btn-back">Voltar para a Página Inicial</a>
+    {% for img_base64 in etiquetas %}
+        <div class="etiqueta">
+            <img src="data:image/png;base64,{{ img_base64 }}" alt="QR Code">
+        </div>
+    {% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Patrimônio</title>
+    <!-- Link para o Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilo para garantir que o footer fique fixo na parte inferior */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .content {
+            flex: 1;
+            padding-bottom: 60px; /* Espaço para evitar sobreposição do footer */
+        }
+    </style>
+    <script>
+        // Função para validar os números antes de enviar o formulário
+        function validarFormulario() {
+            var numeroInicial = parseInt(document.getElementById('numero_inicial').value);
+            var numeroFinal = parseInt(document.getElementById('numero_final').value);
+
+            if (numeroInicial > numeroFinal) {
+                alert("O número inicial não pode ser maior que o número final.");
+                return false; // Impede o envio do formulário
+            }
+            return true; // Permite o envio do formulário
+        }
+
+        // Função para garantir que o campo só aceite números inteiros
+        function validarNumero(event) {
+            var input = event.target;
+            var valor = input.value;
+
+            // Substitui qualquer caractere não numérico
+            input.value = valor.replace(/\D/g, '');
+        }
+
+        // Função para definir o ano dinamicamente no footer
+        window.onload = function() {
+            var ano = new Date().getFullYear(); // Obtém o ano atual
+            document.getElementById("anoFooter").innerText = ano; // Atualiza o texto do footer
+        };
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Gerador de Patrimônio</h1>
+        <p>Insira um intervalo de números para gerar as etiquetas.</p>
+    </header>
+
+    <!-- Main content -->
+    <div class="container mt-5 content">
+        <form method="post" onsubmit="return validarFormulario()">
+            <div class="mb-3">
+                <label for="numero_inicial" class="form-label">Número inicial:</label>
+                <input type="number" class="form-control" id="numero_inicial" name="numero_inicial" required oninput="validarNumero(event)">
+            </div>
+            <div class="mb-3">
+                <label for="numero_final" class="form-label">Número final:</label>
+                <input type="number" class="form-control" id="numero_final" name="numero_final" required oninput="validarNumero(event)">
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Gerar Etiquetas</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p>&copy; <span id="anoFooter"></span> Gerador de Etiquetas. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Link para o Bootstrap JS (opcional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

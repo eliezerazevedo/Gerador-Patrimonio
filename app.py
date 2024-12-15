@@ -56,7 +56,7 @@ def home():
 
             # Adiciona o QR code à etiqueta
             qr_img = qr_img.resize((180, 180))  # Ajusta o tamanho do QR code
-            etiqueta.paste(qr_img, (425, 125))
+            etiqueta.paste(qr_img, (425, 135))
 
             # Converte a imagem para base64
             buffer = BytesIO()
@@ -72,4 +72,4 @@ def home():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5478, debug=True)
+    app.run(host="0.0.0.0", port=5997, debug=True)

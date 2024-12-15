@@ -5,6 +5,8 @@ import base64
 from PIL import Image, ImageDraw, ImageFont
 import os
 import sqlite3
+from datetime import datetime
+import pytz  # Importando o pytz para lidar com fusos horários
 
 # Configuração do Flask
 app = Flask(__name__)
@@ -89,11 +91,14 @@ def home():
             etiquetas.append(img_base64)
             numeros_gerados.append(numero)
 
-        # Armazena os números gerados no banco de dados
+        # Grava os números no banco de dados com a data e hora local de São Paulo
+        sao_paulo_tz = pytz.timezone('America/Sao_Paulo')
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             for numero in numeros_gerados:
-                cursor.execute("INSERT INTO etiquetas (numero) VALUES (?)", (numero,))
+                # Obtém a data e hora atual no fuso horário de São Paulo
+                data_hora = datetime.now(sao_paulo_tz).strftime('%d-%m-%Y %H:%M:%S')
+                cursor.execute("INSERT INTO etiquetas (numero, data_hora) VALUES (?, ?)", (numero, data_hora))
 
             # Mantém apenas os 100 últimos registros
             cursor.execute("DELETE FROM etiquetas WHERE id NOT IN (SELECT id FROM etiquetas ORDER BY id DESC LIMIT 100)")
@@ -102,7 +107,7 @@ def home():
         # Renderiza a página de impressão
         return render_template("print.html", etiquetas=etiquetas)
 
-    # Recupera os 100 últimos números impressos
+    # Recupera os 100 últimos números e suas respectivas datas
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT numero, data_hora FROM etiquetas ORDER BY id DESC LIMIT 100")

@@ -1,28 +1,34 @@
-# Usar imagem base do Python
+# Use uma imagem base oficial do Python
 FROM python:3.12-slim
 
-# Definir variáveis de ambiente para evitar que o Python gere arquivos de bytecode e para o pip não usar cache
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PIP_NO_CACHE_DIR=1
+# Instalar dependências para fusos horários
+RUN apt-get update && apt-get install -y tzdata
 
-# Criar um diretório de trabalho no contêiner
+# Instalar dependências para compilar Pillow
+RUN apt-get update && apt-get install -y \
+    libjpeg-dev \
+    zlib1g-dev \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libwebp-dev \
+    tcl8.6-dev \
+    tk8.6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Defina o diretório de trabalho
 WORKDIR /app
 
-# Copiar o arquivo de dependências
+# Copie o arquivo requirements.txt para dentro do container
 COPY requirements.txt .
 
-# Instalar as dependências
+# Instale as dependências do Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar o código da aplicação para dentro do contêiner
+# Copie todo o código da aplicação para dentro do container
 COPY . .
 
-# Criar um usuário não-root para executar a aplicação de maneira mais segura
-RUN useradd -m appuser
-USER appuser
-
-# Expor a porta que o Flask utiliza
+# Exponha a porta que a aplicação Flask vai rodar
 EXPOSE 5997
 
-# Definir o comando para rodar a aplicação
+# Comando para rodar a aplicação Flask
 CMD ["python", "app.py"]

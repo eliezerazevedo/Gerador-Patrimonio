@@ -1,26 +1,19 @@
 version: '3.9'
 
 services:
-  flask_app:
-    image: patrimonio_system  # Define o nome da imagem
-    container_name: patrimonio_system_container  # Define um nome personalizado para o contêiner
+  patrimonio_system:
+    build: .  # Altere para o diretório atual para construir a imagem
+    container_name: patrimonio_system_container
     ports:
       - "5997:5997"
     volumes:
-      - patrimonio-system:/app/db  # Mapeia o volume para o diretório no contêiner
+      - patrimonio-system:/app/db
     environment:
-      - FLASK_ENV=development  # Define o ambiente como desenvolvimento
+      - FLASK_ENV=production
+      - TZ=America/Sao_Paulo
     stdin_open: true
     tty: true
     restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'  # Limita o uso de CPU a 50% de um núcleo
-          memory: 512M  # Limita o uso de memória a 512MB
-        reservations:
-          cpus: '0.2'  # Reserva 20% de um núcleo para o contêiner
-          memory: 256M  # Reserva 256MB de memória para o contêiner
 
 volumes:
   patrimonio-system:

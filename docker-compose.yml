@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  flask_app:
+    image: patrimonio_system  # Define the image name
+    container_name: patrimonio_system_container  # Set a custom container name
+    ports:
+      - "5997:5997"
+    volumes:
+      - patrimonio-system:/app/db
+    environment:
+      - FLASK_ENV=development
+    stdin_open: true
+    tty: true
+    restart: always
+
+volumes:
+  patrimonio-system:

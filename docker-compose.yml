@@ -13,7 +13,17 @@ services:
       - TZ=America/Sao_Paulo
     stdin_open: true
     tty: true
+    networks:
+      - flask_network
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256M   # Reservando uma quantidade mínima de memória
+          cpus: '0.5'     # Reservando meio núcleo de CPU
 
 volumes:
   patrimonio-system:
+networks:
+  flask_network:
+    driver: bridge

@@ -76,7 +76,7 @@ def home():
                     font = ImageFont.load_default()
 
             # Adiciona o número à etiqueta
-            draw.text((220, 220), f"PAT{numero:04}", fill="black", font=font)
+            draw.text((185, 265), f"PAT{numero:04}", fill="black", font=font)
 
             # Adiciona o QR code à etiqueta
             qr_img = qr_img.resize((180, 180))

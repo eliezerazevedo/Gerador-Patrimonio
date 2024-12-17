@@ -13,14 +13,16 @@
             min-height: 100vh;
             margin: 0;
         }
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
         .content {
             flex: 1;
-            padding-bottom: 60px;
+            padding-bottom: 60px; /* Espaço para o rodapé */
+        }
+        footer {
+            margin-top: auto;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
         }
     </style>
 </head>
@@ -72,8 +74,8 @@
         </table>        
     </div>
 
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p>&copy; <span id="anoFooter"></span> Gerador de Etiquetas. Todos os direitos reservados.</p>
+    <footer>
+        <p>&copy; <span id="anoFooter"></span> Gerador de Patrimônio Print Master - Portal desenvolvido por <a href="https://www.linkedin.com/in/eliezerazevedo/" target="_blank">Eliezer Azevedo</a></p>
     </footer>
     <script>
         document.getElementById("anoFooter").innerText = new Date().getFullYear();

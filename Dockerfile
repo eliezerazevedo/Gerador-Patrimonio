@@ -1,11 +1,13 @@
 # Use uma imagem base oficial do Python
-FROM python:3.12-slim
+FROM python:3.13.1-slim
 
-# Instalar dependências para fusos horários
-RUN apt-get update && apt-get install -y tzdata
+# Configurações de ambiente para melhor desempenho e menor ruído
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-# Instalar dependências para compilar Pillow
-RUN apt-get update && apt-get install -y \
+# Instalar dependências necessárias em uma única etapa
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tzdata \
     libjpeg-dev \
     zlib1g-dev \
     libfreetype6-dev \
@@ -18,17 +20,15 @@ RUN apt-get update && apt-get install -y \
 # Defina o diretório de trabalho
 WORKDIR /app
 
-# Copie o arquivo requirements.txt para dentro do container
+# Copie e instale as dependências do Python
 COPY requirements.txt .
-
-# Instale as dependências do Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie todo o código da aplicação para dentro do container
+# Copie o código da aplicação
 COPY . .
 
-# Exponha a porta que a aplicação Flask vai rodar
+# Exponha a porta da aplicação
 EXPOSE 5997
 
-# Comando para rodar a aplicação Flask
+# Comando para rodar a aplicação
 CMD ["python", "app.py"]
